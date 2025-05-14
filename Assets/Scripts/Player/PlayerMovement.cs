@@ -45,12 +45,7 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector2 mouseDir = GetMouseDirection();
 
-        /*Vector2 currentRotation = new()
-        {
-            x = transform.rotation.eulerAngles.x,
-            y = transform.rotation.eulerAngles.y
-        };*/
-        
+
         // y축에 각도 제한을 두어야 함
         _currentRotation.x += mouseDir.x;
         _currentRotation.y = Mathf.Clamp(
@@ -70,9 +65,17 @@ public class PlayerMovement : MonoBehaviour
         return rotateDirVector.normalized;
     }
 
-    public void SetBodyRotate()
+    public void SetBodyRotate(Vector3 direction)
     {
+        if(direction == Vector3.zero) return;
 
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+        _avatar.rotation = Quaternion.Lerp(
+            _avatar.rotation,
+            targetRotation,
+            _playerStatus.rotateSpeed * Time.deltaTime
+            );
     }
 
 
