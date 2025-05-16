@@ -21,7 +21,7 @@ public class Gun : MonoBehaviour
     private void Init()
     {
         _camera = Camera.main;
-        _impulse = new CinemachineImpulseSource();
+        _impulse = GetComponent<CinemachineImpulseSource>();
     }
     private void Update()
     {
@@ -38,10 +38,9 @@ public class Gun : MonoBehaviour
     {
         if (!_canShoot) return false;
 
+        PlayShootSound();
         PlayCameraEffect();
         PlayShootEffect();
-        PlayShootSound();
-
         _currentCount = _shootDelay;
 
         GameObject target = RayShoot();

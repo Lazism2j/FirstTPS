@@ -19,7 +19,8 @@ namespace DesignPattern
         {
             _stack = new Stack<PooledObject>(initSize);
             _targetPrefab = target;
-            _poolObject = new GameObject($"{target.name} pool");    
+            _poolObject = new GameObject($"{target.name} pool");
+            _poolObject.transform.parent = parent;
 
             for (int i = 0;  i < initSize; i++)
             {

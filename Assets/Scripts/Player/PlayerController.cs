@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        HandlePlayerCotrol();
+        HandlePlayerControl();
     }
 
     private void OnDisable()
@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour
         _animator = GetComponent<Animator>();
     }
 
-    private void HandlePlayerCotrol()
+    private void HandlePlayerControl()
     {
         if (!IsControlActivate) return;
 
@@ -103,7 +103,7 @@ public class PlayerController : MonoBehaviour
         _status.IsMoving.Subscribe(SetMoveAnimation);
         _status.IsAiming.Subscribe(_aimCamera.gameObject.SetActive);
         _status.IsAiming.Subscribe(SetAimAnimation);
-        _status.IsAttacking.Subscribe(SetMoveAnimation);
+        _status.IsAttacking.Subscribe(SetAttackAnimation);
     }
 
     private void UnsubscribeEvents()
@@ -111,7 +111,7 @@ public class PlayerController : MonoBehaviour
         _status.IsMoving.Unsubscribe(SetMoveAnimation);
         _status.IsAiming.Unsubscribe(_aimCamera.gameObject.SetActive);
         _status.IsAiming.Unsubscribe(SetAimAnimation);
-        _status.IsAttacking.Unsubscribe(SetMoveAnimation);
+        _status.IsAttacking.Unsubscribe(SetAttackAnimation);
     }
 
     private void SetAimAnimation(bool value) => _animator.SetBool("IsAim", value);
