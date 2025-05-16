@@ -3272,8 +3272,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _movement: {fileID: 4168352753531560618}
   _status: {fileID: 1386015504363912009}
+  _aimImage: {fileID: 2414610066768279496}
   _aimCamera: {fileID: 8904532553236144695}
   _gun: {fileID: 2558283457475389424}
+  _aimAnimator: {fileID: 6247026271093948526}
   _aimKey: 324
   _shootKey: 323
 --- !u!95 &5922221321875960387
