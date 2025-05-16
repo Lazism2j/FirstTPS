@@ -8,10 +8,12 @@ public class PlayerController : MonoBehaviour
     public bool IsControlActivate { get; set; } = true;
     [SerializeField] PlayerMovement _movement;
     [SerializeField] PlayerStatus _status;
-
+    
     [SerializeField] private CinemachineVirtualCamera _aimCamera;
+    [SerializeField] private Gun _gun;
 
     [SerializeField] private KeyCode _aimKey = KeyCode.Mouse1;
+    [SerializeField] private KeyCode _shootKey = KeyCode.Mouse0;
 
     private Animator _animator;
 
@@ -48,6 +50,20 @@ public class PlayerController : MonoBehaviour
 
         HandleMovement();
         HandleAiming();
+        HandleShoot();
+        
+    }
+
+    private void HandleShoot()
+    {
+        if (_status.IsAiming.Value && Input.GetKey(_shootKey))
+        {
+            _status.IsAttacking.Value = _gun.Shoot();
+        }
+        else
+        {
+            _status.IsAttacking.Value = false;
+        }
     }
 
     private void HandleMovement()
@@ -68,6 +84,13 @@ public class PlayerController : MonoBehaviour
         else avatarDir = moveDir;
 
         _movement.SetBodyRotate(avatarDir);
+
+        if( _status.IsMoving.Value)
+        {
+            Vector3 input = _movement.GetInputDirection();
+            _animator.SetFloat("X", input.x);
+            _animator.SetFloat("Z", input.z);
+        }
     }
         
     private void HandleAiming()
@@ -77,15 +100,21 @@ public class PlayerController : MonoBehaviour
 
     private void SubscribeEvents()
     {
+        _status.IsMoving.Subscribe(SetMoveAnimation);
         _status.IsAiming.Subscribe(_aimCamera.gameObject.SetActive);
         _status.IsAiming.Subscribe(SetAimAnimation);
+        _status.IsAttacking.Subscribe(SetMoveAnimation);
     }
 
     private void UnsubscribeEvents()
     {
+        _status.IsMoving.Unsubscribe(SetMoveAnimation);
         _status.IsAiming.Unsubscribe(_aimCamera.gameObject.SetActive);
         _status.IsAiming.Unsubscribe(SetAimAnimation);
+        _status.IsAttacking.Unsubscribe(SetMoveAnimation);
     }
 
     private void SetAimAnimation(bool value) => _animator.SetBool("IsAim", value);
+    private void SetMoveAnimation(bool value) => _animator.SetBool("IsMove", value);
+    private void SetAttackAnimation(bool value) => _animator.SetBool("IsAttack", value);
 }
