@@ -4,7 +4,7 @@ using UnityEngine;
 using Cinemachine;
 using UnityEngine.UI;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IDamagable
 {
     public bool IsControlActivate { get; set; } = true;
     [SerializeField] PlayerMovement _movement;
@@ -100,6 +100,11 @@ public class PlayerController : MonoBehaviour
     private void HandleAiming()
     {
         _status.IsAiming.Value = Input.GetKey(_aimKey);
+    }
+
+    public void TakeDamage(int value)
+    {
+
     }
 
     private void SubscribeEvents()

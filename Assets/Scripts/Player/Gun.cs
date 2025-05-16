@@ -43,22 +43,23 @@ public class Gun : MonoBehaviour
         PlayShootEffect();
         _currentCount = _shootDelay;
 
-        GameObject target = RayShoot();
+        IDamagable target = RayShoot();
         if (target == null) return true;
 
-        Debug.Log($"{target.name} ÇÇ°Ý");
+        target.TakeDamage(_shootDamage);
         return true;    
         
     }
 
-    private GameObject RayShoot()
+    private IDamagable RayShoot()
     {
         Ray ray = new Ray(_camera.transform.position, _camera.transform.forward);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit,_attackRange, _targetLayer))
         {
-            return hit.transform.gameObject;
+            
+            return hit.transform.GetComponent<IDamagable>();
         }
 
         return null;
